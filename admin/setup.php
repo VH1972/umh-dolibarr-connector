@@ -16,7 +16,7 @@ if (!$user->admin) {
     accessforbidden();
 }
 
-$langs->load('umhconnector@umh_connector');
+$langs->load('umhconnector@umhconnector');
 $langs->load('admin');
 
 $action = GETPOST('action', 'aZ09');

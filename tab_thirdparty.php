@@ -14,7 +14,7 @@ require_once DOL_DOCUMENT_ROOT.'/core/class/extrafields.class.php';
 
 global $langs, $user, $conf, $db;
 
-$langs->load('umhconnector@umh_connector');
+$langs->load('umhconnector@umhconnector');
 $langs->load('companies');
 
 $id     = GETPOST('id',     'int');

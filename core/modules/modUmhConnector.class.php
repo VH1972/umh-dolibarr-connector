@@ -18,7 +18,7 @@ class modUmhConnector extends DolibarrModules
         $this->db = $db;
 
         // Module identity
-        $this->numero          = 500210;
+        $this->numero          = 96210;
         $this->rights_class    = 'umhconnector';
         $this->family          = 'crm';
         $this->module_position = '90';
@@ -36,7 +36,7 @@ class modUmhConnector extends DolibarrModules
         );
 
         // Settings page
-        $this->config_page_url = array('setup.php@umh_connector');
+        $this->config_page_url = array('setup.php@umhconnector');
 
         // Minimum Dolibarr version
         $this->need_dolibarr_version = array(14, 0);
@@ -50,7 +50,7 @@ class modUmhConnector extends DolibarrModules
         // Custom tab on thirdparty (customer) card
         // Format: objecttype:+tabname:Label:langfile@module:condition:url
         $this->tabs = array(
-            'thirdparty:+umh_messenger:UMH Messenger:umhconnector@umh_connector:1:/custom/umh_connector/tab_thirdparty.php?id=__ID__',
+            'thirdparty:+umh_messenger:UMH Messenger:umhconnector@umhconnector:1:/custom/umhconnector/tab_thirdparty.php?id=__ID__',
         );
 
         // Permissions
@@ -94,7 +94,7 @@ class modUmhConnector extends DolibarrModules
             'Format: +49123456789',          // help
             '',                              // computed
             '',                              // entity
-            'umhconnector@umh_connector',    // langfile
+            'umhconnector@umhconnector',    // langfile
             '$conf->umhconnector->enabled'   // enabled condition
         );
 
@@ -107,7 +107,7 @@ class modUmhConnector extends DolibarrModules
             'societe',
             0, 0, '', '', 1, '', '-1',
             'Numerische Chat-ID aus UMH (z.B. 123456789)',
-            '', '', 'umhconnector@umh_connector',
+            '', '', 'umhconnector@umhconnector',
             '$conf->umhconnector->enabled'
         );
 
@@ -119,7 +119,7 @@ class modUmhConnector extends DolibarrModules
             100, '30', 'socpeople',
             0, 0, '', '', 1, '', '-1',
             'Format: +49123456789',
-            '', '', 'umhconnector@umh_connector',
+            '', '', 'umhconnector@umhconnector',
             '$conf->umhconnector->enabled'
         );
 
@@ -130,7 +130,7 @@ class modUmhConnector extends DolibarrModules
             101, '60', 'socpeople',
             0, 0, '', '', 1, '', '-1',
             'Numerische Chat-ID aus UMH (z.B. 123456789)',
-            '', '', 'umhconnector@umh_connector',
+            '', '', 'umhconnector@umhconnector',
             '$conf->umhconnector->enabled'
         );
 
