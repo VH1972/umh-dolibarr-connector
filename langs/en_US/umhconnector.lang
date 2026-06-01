@@ -1,0 +1,14 @@
+# UMH Connector — English language file
+UMHSaved=Settings saved.
+UMHSettingName=Setting
+UMHSettingValue=Value
+UMHSettingHelp=Help
+UMHUrl=UMH App URL
+UMHUrlHelp=URL of your UMH SaaS instance (e.g. https://saas.messengerhub.de)
+UMHApiKey=API Key
+UMHApiKeyHelp=Required for future direct integrations (optional for now)
+UMHMessengerContacts=Messenger Contacts
+UMHOpenConversation=Open Conversation
+UMHOpenInbox=Open UMH Inbox
+UMHNotSet=Not set
+UMHEditContacts=Edit Messenger Contacts
