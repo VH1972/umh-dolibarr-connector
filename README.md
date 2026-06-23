@@ -36,7 +36,7 @@ Connect your Dolibarr customers to **[Unified Messenger Hub](https://messengerhu
 ## How it works
 
 ### WhatsApp
-Customer lookup uses the **standard phone field** in Dolibarr. Make sure the customer's phone number is stored in E.164 format (e.g. `+49 123 456789`).
+Customer lookup checks the dedicated `umh_whatsapp` extrafield first, then falls back to the **standard phone field** in Dolibarr. Only fill in `umh_whatsapp` if WhatsApp runs on a different number than the stored phone number. Make sure whichever number is used is stored in E.164 format (e.g. `+49 123 456789`).
 
 ### Telegram
 The module adds a `telegram_chat_id` extrafield. The numeric Chat-ID is visible in the UMH contact profile and must be entered once per customer.
