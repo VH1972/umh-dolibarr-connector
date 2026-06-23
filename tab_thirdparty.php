@@ -66,8 +66,9 @@ if (GETPOST('saved', 'int')) {
 // Current values
 $whatsapp = isset($object->array_options['options_umh_whatsapp'])
     ? $object->array_options['options_umh_whatsapp'] : '';
-// Fallback auf Telefon, falls keine eigene WhatsApp-Nummer hinterlegt ist (meist identisch)
-$whatsappEffective = $whatsapp !== '' ? $whatsapp : $object->phone;
+// BEWUSST KEIN Fallback auf Telefon: sonst Risiko, ein kostenpflichtiges Meta-Template an eine
+// Festnetznummer ohne WhatsApp zu senden, auf deren Antwort man dann nie wartet. Muss explizit
+// gepflegt werden, auch wenn identisch mit Telefon.
 $telegram  = isset($object->array_options['options_telegram_chat_id'])
     ? $object->array_options['options_telegram_chat_id']  : '';
 
@@ -77,11 +78,11 @@ $umhUrl = rtrim(getDolGlobalString('UMH_CONNECTOR_URL', 'https://saas.messengerh
 print '<div style="margin: 1.5rem 0; display:flex; gap: 1rem; flex-wrap: wrap;">';
 
 // WhatsApp-Karte
-$openUrlWa = $whatsappEffective ? $umhUrl.'/inbox?phone='.urlencode($whatsappEffective) : null;
+$openUrlWa = $whatsapp ? $umhUrl.'/inbox?phone='.urlencode($whatsapp) : null;
 print '<div style="flex:1; min-width:200px; padding:1rem 1.25rem; background:#f8f9fa; border-radius:8px; border:1px solid #dee2e6;">';
 print '<div style="font-size:0.78rem; color:#666; margin-bottom:0.35rem;"><i class="fab fa-whatsapp" style="color:#25D366;"></i> WhatsApp</div>';
-if ($whatsappEffective) {
-    print '<div style="font-weight:700; font-size:1rem; margin-bottom:0.6rem;">'.dol_escape_htmltag($whatsappEffective).'</div>';
+if ($whatsapp) {
+    print '<div style="font-weight:700; font-size:1rem; margin-bottom:0.6rem;">'.dol_escape_htmltag($whatsapp).'</div>';
     print '<a href="'.dol_escape_htmltag($openUrlWa).'" target="umh_inbox" class="button" style="background:#25D366;border-color:#25D366;color:#fff;display:block;text-align:center;">';
     print '<i class="fab fa-whatsapp"></i> '.$langs->trans('UMHOpenConversation');
     print '</a>';
@@ -111,8 +112,9 @@ print '</div>'; // end cards flex-row
 // Hinweis zu den Feldern
 print '<div style="margin: 0 0 1.5rem 0; padding: 0.75rem 1rem; background: #fff8e1; border-left: 3px solid #ffc107; border-radius: 4px; font-size: 0.85rem; color: #555;">';
 print '<b>Hinweis:</b> ';
-print 'WhatsApp-Lookup in UMH nutzt zuerst das WhatsApp-Feld hier, sonst das Standard-Telefon-Feld (<i>Telefon</i> in der Firmenkarte). ';
-print 'Nur ausfüllen, wenn WhatsApp auf einer anderen Nummer läuft als Telefon. ';
+print 'WhatsApp-Nummer bitte immer eintragen, auch wenn sie identisch mit dem Telefon-Feld ist — ';
+print 'der Button sendet sonst nicht, statt versehentlich eine kostenpflichtige Nachricht an eine ';
+print 'Festnetznummer ohne WhatsApp zu schicken. ';
 print 'Die Telegram Chat-ID wird von UMH automatisch für die Kundenerkennung verwendet.';
 print '</div>';
 
@@ -129,7 +131,7 @@ print '<div style="display:flex; gap:1rem; flex-wrap:wrap;">';
 // WhatsApp Eingabe
 print '<div style="flex:1; min-width:200px;">';
 print '<label style="display:block; font-size:0.82rem; color:#666; margin-bottom:0.3rem;"><i class="fab fa-whatsapp" style="color:#25D366;"></i> WhatsApp-Nummer</label>';
-print '<input type="text" name="umh_whatsapp" value="'.dol_escape_htmltag($whatsapp).'" class="minwidth200" placeholder="nur falls abweichend von Telefon" style="width:100%;">';
+print '<input type="text" name="umh_whatsapp" value="'.dol_escape_htmltag($whatsapp).'" class="minwidth200" placeholder="+49 123 456789 (auch wenn identisch mit Telefon)" style="width:100%;">';
 print '</div>';
 
 // Telegram Eingabe
