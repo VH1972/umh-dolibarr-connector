@@ -26,7 +26,7 @@ class modUmhConnector extends DolibarrModules
         $this->description     = 'WhatsApp & Telegram Nachrichten direkt aus der Kundenkarte via Unified Messenger Hub';
         $this->editor_name     = 'Vitalij Haun IT HUB';
         $this->editor_url      = 'https://messengerhub.de';
-        $this->version         = '1.0.0';
+        $this->version         = '1.1.0';
         $this->const_name      = 'MAIN_MODULE_'.strtoupper($this->name);
         $this->picto           = 'fa-comments';
 
@@ -59,6 +59,11 @@ class modUmhConnector extends DolibarrModules
         $this->rights[1][1] = 'UMH-Tab lesen';
         $this->rights[1][3] = 1;
         $this->rights[1][4] = 'read';
+
+        $this->rights[2][0] = $this->numero + 2;
+        $this->rights[2][1] = 'UMH-Tab bearbeiten';
+        $this->rights[2][3] = 1; // Standard an: wie in 1.0.0 (dort reichte das Leserecht zum Speichern)
+        $this->rights[2][4] = 'write';
 
         $this->menu = array();
     }
@@ -95,7 +100,7 @@ class modUmhConnector extends DolibarrModules
             '',                              // computed
             '',                              // entity
             'umhconnector@umhconnector',    // langfile
-            '$conf->umhconnector->enabled'   // enabled condition
+            "isModEnabled('umhconnector')"   // enabled condition
         );
 
         $ef->addExtraField(
@@ -108,7 +113,7 @@ class modUmhConnector extends DolibarrModules
             0, 0, '', '', 1, '', '-1',
             'Numerische Chat-ID aus UMH (z.B. 123456789)',
             '', '', 'umhconnector@umhconnector',
-            '$conf->umhconnector->enabled'
+            "isModEnabled('umhconnector')"
         );
 
         // --- Contact (socpeople) ---
@@ -120,7 +125,7 @@ class modUmhConnector extends DolibarrModules
             0, 0, '', '', 1, '', '-1',
             'Format: +49123456789',
             '', '', 'umhconnector@umhconnector',
-            '$conf->umhconnector->enabled'
+            "isModEnabled('umhconnector')"
         );
 
         $ef->addExtraField(
@@ -131,7 +136,7 @@ class modUmhConnector extends DolibarrModules
             0, 0, '', '', 1, '', '-1',
             'Numerische Chat-ID aus UMH (z.B. 123456789)',
             '', '', 'umhconnector@umhconnector',
-            '$conf->umhconnector->enabled'
+            "isModEnabled('umhconnector')"
         );
 
         return 1;
@@ -142,14 +147,13 @@ class modUmhConnector extends DolibarrModules
      */
     public function remove($options = '')
     {
-        include_once DOL_DOCUMENT_ROOT.'/core/class/extrafields.class.php';
-        $ef = new ExtraFields($this->db);
-
-        foreach (array('societe', 'socpeople') as $element) {
-            $ef->delete('umh_whatsapp',    $element);
-            $ef->delete('telegram_chat_id', $element);
-        }
-
+        // BEWUSST kein ExtraFields::delete() hier: das entfernt nicht nur die
+        // Feld-Definition, sondern droppt die Datenbank-Spalte samt aller
+        // gepflegten Werte. remove() läuft bei JEDER Deaktivierung (nicht nur
+        // bei einer endgültigen Deinstallation) — das hätte alle Kunden ihre
+        // gesamte WhatsApp/Telegram-Kontaktzuordnung unwiederbringlich kosten
+        // können, sobald sie das Modul auch nur kurz ausschalten (P3-11b,
+        // technischer Audit).
         return $this->_remove(array(), $options);
     }
 }

@@ -24,6 +24,13 @@ if (!$user->rights->umhconnector->read) {
     accessforbidden();
 }
 
+// Prüft nicht nur das generelle Modul-Recht, sondern ob DIESER Nutzer auf
+// DIESEN konkreten Kunden zugreifen darf (z.B. Vertriebler-Zuordnung,
+// Mandantentrennung) — ohne das könnte jeder mit dem generischen
+// umhconnector-Recht per id-Parameter beliebige fremde Kundendaten lesen/
+// ändern (P3-11b, technischer Audit).
+restrictedArea($user, 'societe', $id);
+
 // Load customer
 $object = new Societe($db);
 if ($object->fetch($id) <= 0) {
@@ -33,7 +40,7 @@ if ($object->fetch($id) <= 0) {
 $object->fetch_optionals();
 
 // --- Save extrafields ---
-if ($action === 'update_umh' && $user->rights->umhconnector->read) {
+if ($action === 'update_umh' && $user->rights->umhconnector->write) {
     $whatsapp = trim(GETPOST('umh_whatsapp',  'alpha'));
     $telegram = trim(GETPOST('umh_telegram',  'alpha')); // Formularfeld heißt umh_telegram, speichert als telegram_chat_id
 
@@ -83,7 +90,7 @@ print '<div style="flex:1; min-width:200px; padding:1rem 1.25rem; background:#f8
 print '<div style="font-size:0.78rem; color:#666; margin-bottom:0.35rem;"><i class="fab fa-whatsapp" style="color:#25D366;"></i> WhatsApp</div>';
 if ($whatsapp) {
     print '<div style="font-weight:700; font-size:1rem; margin-bottom:0.6rem;">'.dol_escape_htmltag($whatsapp).'</div>';
-    print '<a href="'.dol_escape_htmltag($openUrlWa).'" target="umh_inbox" class="button" style="background:#25D366;border-color:#25D366;color:#fff;display:block;text-align:center;">';
+    print '<a href="'.dol_escape_htmltag($openUrlWa).'" target="umh_inbox" rel="noopener noreferrer" class="button" style="background:#25D366;border-color:#25D366;color:#fff;display:block;text-align:center;">';
     print '<i class="fab fa-whatsapp"></i> '.$langs->trans('UMHOpenConversation');
     print '</a>';
 } else {
@@ -98,7 +105,7 @@ print '<div style="flex:1; min-width:200px; padding:1rem 1.25rem; background:#f8
 print '<div style="font-size:0.78rem; color:#666; margin-bottom:0.35rem;"><i class="fas fa-paper-plane" style="color:#229ED9;"></i> Telegram</div>';
 if ($telegram) {
     print '<div style="font-weight:700; font-size:1rem; margin-bottom:0.6rem;">'.dol_escape_htmltag($telegram).'</div>';
-    print '<a href="'.dol_escape_htmltag($openUrlTg).'" target="umh_inbox" class="button" style="background:#229ED9;border-color:#229ED9;color:#fff;display:block;text-align:center;">';
+    print '<a href="'.dol_escape_htmltag($openUrlTg).'" target="umh_inbox" rel="noopener noreferrer" class="button" style="background:#229ED9;border-color:#229ED9;color:#fff;display:block;text-align:center;">';
     print '<i class="fas fa-paper-plane"></i> '.$langs->trans('UMHOpenConversation');
     print '</a>';
 } else {

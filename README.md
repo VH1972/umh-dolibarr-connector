@@ -23,9 +23,18 @@ Connect your Dolibarr customers to **[Unified Messenger Hub](https://messengerhu
 ## Installation
 
 1. Download or clone this repository
-2. Copy the `umh_connector` folder to `dolibarr/htdocs/custom/umh_connector/`
+2. Copy the module folder to `dolibarr/htdocs/custom/umhconnector/` — the folder **must** be named `umhconnector` (the repository folder may be named differently). Alternatively upload the release ZIP via **Setup → Modules/Applications → Deploy/install external app/module**
 3. In Dolibarr: **Home → Setup → Modules/Applications** → search for **UMH Connector** → activate
 4. Go to **Setup → UMH Connector** → enter your UMH instance URL
+
+## Updating
+
+> ⚠️ **Updating from 1.0.0: do NOT deactivate the module before the new files are in place.** In version 1.0.0, deactivating the module deletes the WhatsApp/Telegram extrafields including all stored values. Version 1.1.0 no longer does this.
+
+1. Back up your database (**Home → Admin tools → Backup**)
+2. Upload the new ZIP via **Setup → Modules/Applications → Deploy/install external app/module** while the module stays **enabled** (the existing module folder is replaced)
+3. Only now **deactivate and immediately re-activate** the module — this registers the new permission "UMH-Tab bearbeiten" (edit) introduced in 1.1.0
+4. Check: stored numbers are still shown in the "UMH Messenger" tab and saving works; if a user cannot save, grant "UMH-Tab bearbeiten" under **Users → Permissions**
 
 ## Configuration
 
